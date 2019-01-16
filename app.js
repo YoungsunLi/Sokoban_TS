@@ -1,9 +1,10 @@
+"use strict";
 class Main {
-    public Run(): void {
+    Run() {
         console.log('Hello Sokoban!');
     }
 }
-
 window.onload = () => {
     new Main().Run();
 };
+//# sourceMappingURL=app.js.map
