@@ -59,6 +59,7 @@ class Main {
                     this.xStart += this.step;
                     break;
                 default:
+                    console.log(e.key);
                     return;
             }
         };
@@ -66,9 +67,6 @@ class Main {
 
     // 更新数据
     private Update(): void {
-        // this.xStart += this.xDir;
-        // this.yStart += this.yDir;
-
         if (this.xStart === this.canvas.width) {
             this.xStart = 0;
         } else if (this.xStart < 0) {
@@ -79,6 +77,30 @@ class Main {
             this.yStart = 0;
         } else if (this.yStart < 0) {
             this.yStart = this.canvas.height - this.step;
+        }
+
+        // 碰到箱子
+        if (this.xStart === this.xBox && this.yStart === this.yBox) {
+            this.xBox += this.xDir;
+            this.yBox += this.yDir;
+
+            if (this.xBox === this.canvas.width) {
+                this.xBox = 0;
+            } else if (this.xBox < 0) {
+                this.xBox = this.canvas.width - this.step;
+            }
+
+            if (this.yBox === this.canvas.height) {
+                this.yBox = 0;
+            } else if (this.yBox < 0) {
+                this.yBox = this.canvas.height - this.step;
+            }
+        }
+
+        // 箱子碰到终点
+        if (this.xEnd === this.xBox && this.yEnd === this.yBox) {
+            console.log('GAME OVER ~');
+            this.InitPoint();
         }
     }
 
