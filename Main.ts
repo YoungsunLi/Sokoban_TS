@@ -27,12 +27,13 @@ class Main {
 
     // Setup
     public Setup(): void {
+        this.InitPoint();
 
         // 主循环
         setInterval(() => {
             this.Update();
             this.Show();
-        }, 125);
+        }, 40);// 帧率25
 
         // 处理方向键
         onkeydown = (e) => {
@@ -40,18 +41,22 @@ class Main {
                 case 'ArrowUp':
                     this.xDir = 0;
                     this.yDir = -this.step;
+                    this.yStart -= this.step;
                     break;
                 case  'ArrowDown':
                     this.xDir = 0;
                     this.yDir = +this.step;
+                    this.yStart += this.step;
                     break;
                 case 'ArrowLeft':
                     this.xDir = -this.step;
                     this.yDir = 0;
+                    this.xStart -= this.step;
                     break;
                 case 'ArrowRight':
                     this.xDir = +this.step;
                     this.yDir = 0;
+                    this.xStart += this.step;
                     break;
                 default:
                     return;
@@ -61,45 +66,44 @@ class Main {
 
     // 更新数据
     private Update(): void {
-        //this.x += this.xDir;
-        //this.y += this.yDir;
+        // this.xStart += this.xDir;
+        // this.yStart += this.yDir;
 
-        // if (this.xStart === this.canvas.width)
-        // {
-        //     this.xStart = 0;
-        // } else if (this.xStart < 0)
-        // {
-        //     this.xStart = this.canvas.width;
-        // }
-        //
-        // if (this.yStart === this.canvas.height)
-        // {
-        //     this.yStart = 0;
-        // } else if (this.yStart < 0)
-        // {
-        //     this.yStart = this.canvas.height;
-        // }
+        if (this.xStart === this.canvas.width) {
+            this.xStart = 0;
+        } else if (this.xStart < 0) {
+            this.xStart = this.canvas.width - this.step;
+        }
 
-        this.InitPoint();
+        if (this.yStart === this.canvas.height) {
+            this.yStart = 0;
+        } else if (this.yStart < 0) {
+            this.yStart = this.canvas.height - this.step;
+        }
     }
 
     // 显示数据
     private Show(): void {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawMap();
+        this.ctx.fillStyle = 'rgba(50, 177, 108, 1.0)';
         this.ctx.fillRect(this.xStart, this.yStart, this.step, this.step);
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 1.0)';
         this.ctx.fillRect(this.xEnd, this.yEnd, this.step, this.step);
+        this.ctx.fillStyle = 'rgba(89, 61, 61, 1.0)';
         this.ctx.fillRect(this.xBox, this.yBox, this.step, this.step);
     }
 
     // 绘制网格地图
     private drawMap(): void {
         for (let i = 0; i <= this.canvas.width; i += this.step) {
+            // 绘制竖线
             this.ctx.beginPath();
             this.ctx.moveTo(0, i);
             this.ctx.lineTo(this.canvas.width, i);
             this.ctx.stroke();
 
+            // 绘制横线
             this.ctx.beginPath();
             this.ctx.moveTo(i, 0);
             this.ctx.lineTo(i, this.canvas.height);

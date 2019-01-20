@@ -15,27 +15,32 @@ class Main {
         this.Setup();
     }
     Setup() {
+        this.InitPoint();
         setInterval(() => {
             this.Update();
             this.Show();
-        }, 125);
+        }, 40);
         onkeydown = (e) => {
             switch (e.key) {
                 case 'ArrowUp':
                     this.xDir = 0;
                     this.yDir = -this.step;
+                    this.yStart -= this.step;
                     break;
                 case 'ArrowDown':
                     this.xDir = 0;
                     this.yDir = +this.step;
+                    this.yStart += this.step;
                     break;
                 case 'ArrowLeft':
                     this.xDir = -this.step;
                     this.yDir = 0;
+                    this.xStart -= this.step;
                     break;
                 case 'ArrowRight':
                     this.xDir = +this.step;
                     this.yDir = 0;
+                    this.xStart += this.step;
                     break;
                 default:
                     return;
@@ -43,13 +48,27 @@ class Main {
         };
     }
     Update() {
-        this.InitPoint();
+        if (this.xStart === this.canvas.width) {
+            this.xStart = 0;
+        }
+        else if (this.xStart < 0) {
+            this.xStart = this.canvas.width - this.step;
+        }
+        if (this.yStart === this.canvas.height) {
+            this.yStart = 0;
+        }
+        else if (this.yStart < 0) {
+            this.yStart = this.canvas.height - this.step;
+        }
     }
     Show() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawMap();
+        this.ctx.fillStyle = 'rgba(50, 177, 108, 1.0)';
         this.ctx.fillRect(this.xStart, this.yStart, this.step, this.step);
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 1.0)';
         this.ctx.fillRect(this.xEnd, this.yEnd, this.step, this.step);
+        this.ctx.fillStyle = 'rgba(89, 61, 61, 1.0)';
         this.ctx.fillRect(this.xBox, this.yBox, this.step, this.step);
     }
     drawMap() {
