@@ -1,13 +1,21 @@
 class Main {
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
-    private readonly step: number = 20;
+    private readonly step: number = 20; // 一个格子(一步)的大小(单位: px)
+
+    // 向量
     private xDir: number = 0;
     private yDir: number = 0;
+
+    // 起点
     private xStart: number = 0;
     private yStart: number = 0;
+
+    // 终点
     private xEnd: number = 0;
     private yEnd: number = 0;
+
+    // 箱子
     private xBox: number = 0;
     private yBox: number = 0;
 
@@ -17,12 +25,16 @@ class Main {
         this.Setup();
     }
 
+    // Setup
     public Setup(): void {
+
+        // 主循环
         setInterval(() => {
             this.Update();
             this.Show();
         }, 125);
 
+        // 处理方向键
         onkeydown = (e) => {
             switch (e.key) {
                 case 'ArrowUp':
@@ -47,6 +59,7 @@ class Main {
         };
     }
 
+    // 更新数据
     private Update(): void {
         //this.x += this.xDir;
         //this.y += this.yDir;
@@ -70,6 +83,7 @@ class Main {
         this.InitPoint();
     }
 
+    // 显示数据
     private Show(): void {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawMap();
@@ -78,6 +92,7 @@ class Main {
         this.ctx.fillRect(this.xBox, this.yBox, this.step, this.step);
     }
 
+    // 绘制网格地图
     private drawMap(): void {
         for (let i = 0; i <= this.canvas.width; i += this.step) {
             this.ctx.beginPath();
@@ -92,6 +107,7 @@ class Main {
         }
     }
 
+    // 初始化三个点
     private InitPoint(): void {
         let start: [number, number];
         let end: [number, number];
@@ -111,6 +127,7 @@ class Main {
         this.yBox = box[1];
     }
 
+    // 取得地图上的一个随机点
     private GetRandomPoint(): [number, number] {
         const x = Math.floor((Math.random() * this.canvas.width) / this.step) * this.step;
         const y = Math.floor((Math.random() * this.canvas.height) / this.step) * this.step;
